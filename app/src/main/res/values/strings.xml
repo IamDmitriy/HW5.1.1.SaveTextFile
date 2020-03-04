@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">HW5.1.1.SaveTextFile</string>
+    <string name="Add">Добавить</string>
+    <string name="notes">Заметки</string>
+    <string name="open_notes">Открываем записную книжку</string>
+    <string name="btn_save">Сохранить</string>
+    <string name="btn_delete">удалить</string>
+    <string name="delete_file">Удалить файл</string>
+</resources>
