@@ -23,7 +23,6 @@ import java.util.Scanner;
 
 public class MainActivity extends AppCompatActivity {
     private final String LIST_FILE_NAME = "listFile.txt";
-    private final String TEMP_FILE_NAME = "temp.txt";
 
     private Resources res;
     private ItemsDataAdapter adapter;
