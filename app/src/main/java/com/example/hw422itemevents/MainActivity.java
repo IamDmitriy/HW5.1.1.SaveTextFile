@@ -152,10 +152,18 @@ public class MainActivity extends AppCompatActivity {
 
         String[] input = scanner.nextLine().split(";");
 
+        try {
+            fileReader.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         int imageId = Integer.valueOf(input[0]);
         String title = input[1];
         String subtitle = input[2];
         boolean checked = Boolean.valueOf(input[3]);
+
+
 
         ItemData itemData = new ItemData(getDrawable(imageId), title, subtitle, checked);
 
