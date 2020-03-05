@@ -6,4 +6,8 @@
     <string name="btn_save">Сохранить</string>
     <string name="btn_delete">удалить</string>
     <string name="delete_file">Удалить файл</string>
+    <string name="toast_file_deleted">Файл удалён!</string>
+    <string name="toast_file_not_found">Файл не найден!</string>
+    <string name="toast_data_not_exist">Данных для добавления больше нет</string>
+    <string name="toast_error">Упс.. Что-то пошло не так!</string>
 </resources>

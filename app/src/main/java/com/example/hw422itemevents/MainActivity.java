@@ -22,9 +22,14 @@ import java.util.List;
 import java.util.Scanner;
 
 public class MainActivity extends AppCompatActivity {
+    private final String LIST_FILE_NAME = "listFile.txt";
+    private final String TEMP_FILE_NAME = "temp.txt";
+
     private Resources res;
     private ItemsDataAdapter adapter;
     private ListView listView;
+    private File listFile;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
         Toolbar myToolbar = findViewById(R.id.myToolBar);
         setSupportActionBar(myToolbar);
         res = getResources();
+        listFile = new File(getExternalFilesDir(null), LIST_FILE_NAME);
 
         listView = findViewById(R.id.listView);
         adapter = new ItemsDataAdapter(this, null);
@@ -105,18 +111,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void deleteFileList() {
-        File listFile = new File(getExternalFilesDir(null), "listFile.txt");
         if (listFile.exists()) {
             listFile.delete();
-            showToast("Файл удалён");
+            showToast(getString(R.string.toast_file_deleted));
         } else {
-            showToast("Файл не найден");
+            showToast(getString(R.string.toast_file_not_found));
         }
 
     }
 
     private void addItemFromFile() {
-        File listFile = new File(getExternalFilesDir(null), "listFile.txt");
 
         if (!listFile.exists()) {
             createListFile();
@@ -125,37 +129,41 @@ public class MainActivity extends AppCompatActivity {
         FileReader fileReader = null;
         try {
             fileReader = new FileReader(listFile);
-            Scanner scanner = new Scanner(fileReader);
-
-            for (int i = 0; i < adapter.getCount(); i++) {
-                scanner.nextLine();
-            }
-
-            if (!scanner.hasNextLine()) {
-                showToast("Данных для добавления больше нет");
-                return;
-            }
-
-            String[] input = scanner.nextLine().split(";");
-
-            int imageId = Integer.valueOf(input[0]);
-            String title = input[1];
-            String subtitle = input[2];
-            boolean checked = Boolean.valueOf(input[3]);
-
-            ItemData itemData = new ItemData(getDrawable(imageId), title, subtitle, checked);
-
-            adapter.addItem(itemData);
-
         } catch (IOException e) {
             e.printStackTrace();
         }
 
+        Scanner scanner;
+        if (fileReader != null) {
+            scanner = new Scanner(fileReader);
+        } else {
+            showToast(getString(R.string.toast_error));
+            return;
+        }
+
+        for (int i = 0; i < adapter.getCount(); i++) {
+            scanner.nextLine();
+        }
+
+        if (!scanner.hasNextLine()) {
+            showToast(getString(R.string.toast_data_not_exist));
+            return;
+        }
+
+        String[] input = scanner.nextLine().split(";");
+
+        int imageId = Integer.valueOf(input[0]);
+        String title = input[1];
+        String subtitle = input[2];
+        boolean checked = Boolean.valueOf(input[3]);
+
+        ItemData itemData = new ItemData(getDrawable(imageId), title, subtitle, checked);
+
+        adapter.addItem(itemData);
+
     }
 
     private void createListFile() {
-        File listFile = new File(getExternalFilesDir(null), "listFile.txt");
-
         FileWriter writer = null;
         try {
             writer = new FileWriter(listFile);
@@ -177,11 +185,11 @@ public class MainActivity extends AppCompatActivity {
             stringBuilder.append(curItem.getSubtitle());
             stringBuilder.append(";");
             stringBuilder.append(curItem.isChecked());
-            stringBuilder.append("\n");
 
-/*            if ((i + 1) != sourceList.size()) {
+            if ((i+1) != sourceList.size()) {
                 stringBuilder.append("\n");
-            }*/
+            }
+
 
             try {
                 writer.append(stringBuilder.toString());
