@@ -131,8 +131,9 @@ public class MainActivity extends AppCompatActivity {
                 scanner.nextLine();
             }
 
-            if (!scanner.hasNext()) {
+            if (!scanner.hasNextLine()) {
                 showToast("Данных для добавления больше нет");
+                return;
             }
 
             String[] input = scanner.nextLine().split(";");
@@ -164,10 +165,10 @@ public class MainActivity extends AppCompatActivity {
 
         List<ItemData> sourceList = generatedListContent();
 
-        StringBuilder stringBuilder = new StringBuilder();
-
         for (int i = 0; i < sourceList.size(); i++) {
             ItemData curItem = sourceList.get(i);
+
+            StringBuilder stringBuilder = new StringBuilder();
 
             stringBuilder.append(curItem.getImageId());
             stringBuilder.append(";");
@@ -176,10 +177,11 @@ public class MainActivity extends AppCompatActivity {
             stringBuilder.append(curItem.getSubtitle());
             stringBuilder.append(";");
             stringBuilder.append(curItem.isChecked());
+            stringBuilder.append("\n");
 
-            if (i + 1 != sourceList.size()) {
-                stringBuilder.append("/n");
-            }
+/*            if ((i + 1) != sourceList.size()) {
+                stringBuilder.append("\n");
+            }*/
 
             try {
                 writer.append(stringBuilder.toString());

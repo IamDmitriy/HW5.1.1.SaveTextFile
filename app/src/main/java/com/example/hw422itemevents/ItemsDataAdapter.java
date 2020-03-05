@@ -11,8 +11,14 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class ItemsDataAdapter extends BaseAdapter {
 
@@ -25,7 +31,7 @@ public class ItemsDataAdapter extends BaseAdapter {
     private View.OnClickListener btnDeleteListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            removeItem((Integer) view.getTag());
+            removeItemFromFile((Integer) view.getTag(), view.getContext());
         }
     };
 
@@ -46,9 +52,50 @@ public class ItemsDataAdapter extends BaseAdapter {
     }
 
     // Удаляет элемент списка.
-    void removeItem(int position) {
+    void removeItemFromFile(int position, Context context) {
+        int sourceSizeList = getCount();
         items.remove(position);
         notifyDataSetChanged();
+        File listFile = new File(context.getExternalFilesDir(null), "listFile.txt");
+        File temp = new File(context.getExternalFilesDir(null), "temp.txt");
+
+        FileReader fileReaderListFile = null;
+        try {
+            fileReaderListFile = new FileReader(listFile);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        Scanner scannerListFile = new Scanner(fileReaderListFile);
+
+        FileWriter fileWriter = null;
+        try {
+            fileWriter = new FileWriter(temp);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+
+        for (int i = 0; i < sourceSizeList; i++) {
+            if (i == position) continue;
+
+            try {
+                fileWriter.append(scannerListFile.nextLine());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+
+        try {
+            fileReaderListFile.close();
+            fileWriter.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        temp.renameTo(listFile);
+
+
     }
 
     @Override
