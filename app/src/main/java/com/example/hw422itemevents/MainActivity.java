@@ -1,7 +1,6 @@
 package com.example.hw422itemevents;
 
 import android.content.Intent;
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -24,9 +23,7 @@ import java.util.Scanner;
 public class MainActivity extends AppCompatActivity {
     private final String LIST_FILE_NAME = "listFile.txt";
 
-    private Resources res;
     private ItemsDataAdapter adapter;
-    private ListView listView;
     private File listFile;
 
 
@@ -42,10 +39,9 @@ public class MainActivity extends AppCompatActivity {
     private void init() {
         Toolbar myToolbar = findViewById(R.id.myToolBar);
         setSupportActionBar(myToolbar);
-        res = getResources();
         listFile = new File(getExternalFilesDir(null), LIST_FILE_NAME);
 
-        listView = findViewById(R.id.listView);
+        ListView listView = findViewById(R.id.listView);
         adapter = new ItemsDataAdapter(this, null);
         listView.setAdapter(adapter);
 
@@ -94,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
 
         switch (item.getItemId()) {
             case R.id.action_open_notes:
-                showToast(res.getString(R.string.open_notes));
+                showToast(getString(R.string.open_notes));
                 Intent intent = new Intent(MainActivity.this, NotesActivity.class);
                 startActivity(intent);
                 return true;
@@ -162,8 +158,6 @@ public class MainActivity extends AppCompatActivity {
         String subtitle = input[2];
         boolean checked = Boolean.valueOf(input[3]);
 
-
-
         ItemData itemData = new ItemData(getDrawable(imageId), title, subtitle, checked);
 
         adapter.addItem(itemData);
@@ -193,7 +187,7 @@ public class MainActivity extends AppCompatActivity {
             stringBuilder.append(";");
             stringBuilder.append(curItem.isChecked());
 
-            if ((i+1) != sourceList.size()) {
+            if ((i + 1) != sourceList.size()) {
                 stringBuilder.append("\n");
             }
 

@@ -52,11 +52,17 @@ public class ItemsDataAdapter extends BaseAdapter {
     }
 
     // Удаляет элемент списка.
-    void removeItemFromFile(int position, Context context) {
+    public void removeItemFromFile(int position, Context context) {
         int sourceSizeList = getCount();
         items.remove(position);
         notifyDataSetChanged();
+
         File listFile = new File(context.getExternalFilesDir(null), "listFile.txt");
+
+        if (!listFile.exists()) {
+            return;
+        }
+
         File temp = new File(context.getExternalFilesDir(null), "temp.txt");
 
         FileReader fileReaderListFile = null;
