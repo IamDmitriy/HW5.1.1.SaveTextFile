@@ -124,20 +124,16 @@ public class MainActivity extends AppCompatActivity {
             //createListFile();
         }
 
-        FileReader fileReader = null;
+        FileReader fileReader;
         try {
             fileReader = new FileReader(listFile);
         } catch (IOException e) {
             e.printStackTrace();
-        }
-
-        Scanner scanner;
-        if (fileReader != null) {
-            scanner = new Scanner(fileReader);
-        } else {
             showToast(getString(R.string.toast_error));
             return;
         }
+
+        Scanner scanner = new Scanner(fileReader);
 
         for (int i = 0; i < adapter.getCount(); i++) {
             scanner.nextLine();
