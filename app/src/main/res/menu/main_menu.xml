@@ -15,9 +15,15 @@
         android:title="@string/notes"
         app:showAsAction="never" />
 
-    <item android:id="@+id/action_delete_file"
+    <!--    <item android:id="@+id/action_delete_file"
+            android:orderInCategory="600"
+            android:title="@string/delete_file"
+            app:showAsAction="never" />-->
+
+    <item
+        android:id="@+id/action_create_file"
         android:orderInCategory="600"
-        android:title="@string/delete_file"
+        android:title="@string/create_file"
         app:showAsAction="never" />
 
 </menu>

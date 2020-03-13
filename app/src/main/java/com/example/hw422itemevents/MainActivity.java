@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.Scanner;
 
 public class MainActivity extends AppCompatActivity {
-    private final String LIST_FILE_NAME = "listFile.txt";
+    private static final String LIST_FILE_NAME = "listFile.txt";
 
     private ItemsDataAdapter adapter;
     private File listFile;
@@ -40,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
         Toolbar myToolbar = findViewById(R.id.myToolBar);
         setSupportActionBar(myToolbar);
         listFile = new File(getExternalFilesDir(null), LIST_FILE_NAME);
+        deleteFileList();
 
         ListView listView = findViewById(R.id.listView);
         adapter = new ItemsDataAdapter(this, null);
@@ -73,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
         listContent.add(new ItemData("Домашнее задание №3.3.2",
                 "Переключение языков",
                 true,
-                R.drawable.adaptive_layout_app,
+                R.drawable.switch_language_app,
                 this));
 
         return listContent;
@@ -97,8 +98,8 @@ public class MainActivity extends AppCompatActivity {
             case R.id.action_add:
                 addItemFromFile();
                 return true;
-            case R.id.action_delete_file:
-                deleteFileList();
+            case R.id.action_create_file:
+                createListFile();
                 return true;
         }
 
@@ -118,7 +119,9 @@ public class MainActivity extends AppCompatActivity {
     private void addItemFromFile() {
 
         if (!listFile.exists()) {
-            createListFile();
+            showToast(getString(R.string.toast_file_not_found));
+            return;
+            //createListFile();
         }
 
         FileReader fileReader = null;

@@ -52,35 +52,35 @@ public class ItemsDataAdapter extends BaseAdapter {
     }
 
     // Удаляет элемент списка.
-    public void removeItemFromFile(int position, Context context) {
+    void removeItemFromFile(int position, Context context) {
         int sourceSizeList = getCount();
         items.remove(position);
         notifyDataSetChanged();
 
         File listFile = new File(context.getExternalFilesDir(null), "listFile.txt");
-
         if (!listFile.exists()) {
             return;
         }
 
         File temp = new File(context.getExternalFilesDir(null), "temp.txt");
 
-        FileReader fileReaderListFile = null;
+        FileReader fileReaderListFile;
         try {
             fileReaderListFile = new FileReader(listFile);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
+            return;
         }
+
         Scanner scannerListFile = new Scanner(fileReaderListFile);
 
-        FileWriter fileWriter = null;
+        FileWriter fileWriter;
         try {
             fileWriter = new FileWriter(temp);
         } catch (IOException e) {
             e.printStackTrace();
+            return;
         }
-
-
 
         for (int i = 0; i < sourceSizeList; i++) {
             if (i == position) continue;
@@ -89,9 +89,9 @@ public class ItemsDataAdapter extends BaseAdapter {
                 fileWriter.append(scannerListFile.nextLine());
             } catch (IOException e) {
                 e.printStackTrace();
+                return;
             }
         }
-
 
         try {
             fileReaderListFile.close();
