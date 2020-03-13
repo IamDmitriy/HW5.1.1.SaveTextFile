@@ -52,7 +52,6 @@ public class ItemsDataAdapter extends BaseAdapter {
         notifyDataSetChanged();
     }
 
-    // Удаляет элемент списка.
     void removeItemFromFile(int position, Context context) {
         int sourceSizeList = getCount();
         items.remove(position);

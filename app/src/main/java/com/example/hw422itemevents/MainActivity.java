@@ -121,7 +121,7 @@ public class MainActivity extends AppCompatActivity {
         if (!listFile.exists()) {
             showToast(getString(R.string.toast_file_not_found));
             return;
-            //createListFile();
+
         }
 
         FileReader fileReader;
