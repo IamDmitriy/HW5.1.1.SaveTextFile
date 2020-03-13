@@ -11,4 +11,6 @@
     <string name="toast_data_not_exist">Данных для добавления больше нет</string>
     <string name="toast_error">Упс.. Что-то пошло не так!</string>
     <string name="create_file">Создать файл</string>
+    <string name="file_created">Файл создан!</string>
+    <string name="file_already_created">Файл уже создан!</string>
 </resources>

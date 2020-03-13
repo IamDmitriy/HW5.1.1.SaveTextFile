@@ -168,46 +168,57 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void createListFile() {
+        if (listFile.exists()) {
+            showToast(getString(R.string.file_already_created));
+            return;
+        }
+
         FileWriter writer = null;
         try {
             writer = new FileWriter(listFile);
+            List<ItemData> sourceList = generatedListContent();
+
+            for (int i = 0; i < sourceList.size(); i++) {
+                ItemData curItem = sourceList.get(i);
+
+                StringBuilder stringBuilder = new StringBuilder();
+
+                stringBuilder.append(curItem.getImageId());
+                stringBuilder.append(";");
+                stringBuilder.append(curItem.getTitle());
+                stringBuilder.append(";");
+                stringBuilder.append(curItem.getSubtitle());
+                stringBuilder.append(";");
+                stringBuilder.append(curItem.isChecked());
+
+                if ((i + 1) != sourceList.size()) {
+                    stringBuilder.append("\n");
+                }
+
+                writer.append(stringBuilder.toString());
+
+            }
         } catch (IOException e) {
             e.printStackTrace();
-        }
-
-        List<ItemData> sourceList = generatedListContent();
-
-        for (int i = 0; i < sourceList.size(); i++) {
-            ItemData curItem = sourceList.get(i);
-
-            StringBuilder stringBuilder = new StringBuilder();
-
-            stringBuilder.append(curItem.getImageId());
-            stringBuilder.append(";");
-            stringBuilder.append(curItem.getTitle());
-            stringBuilder.append(";");
-            stringBuilder.append(curItem.getSubtitle());
-            stringBuilder.append(";");
-            stringBuilder.append(curItem.isChecked());
-
-            if ((i + 1) != sourceList.size()) {
-                stringBuilder.append("\n");
-            }
-
-
+            showToast(getString(R.string.toast_error));
+        } finally {
             try {
-                writer.append(stringBuilder.toString());
+                if (writer != null) {
+                    writer.close();
+                }
             } catch (IOException e) {
                 e.printStackTrace();
+                showToast(getString(R.string.toast_error));
+                return;
             }
-
         }
 
-        try {
-            writer.close();
-        } catch (IOException e) {
-            e.printStackTrace();
+        if (listFile.exists()) {
+            showToast(getString(R.string.file_created));
+        } else {
+            showToast(getString(R.string.toast_error));
         }
+
     }
 
     private void showToast(String message) {
