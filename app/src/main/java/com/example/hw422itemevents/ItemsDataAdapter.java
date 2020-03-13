@@ -75,37 +75,33 @@ public class ItemsDataAdapter extends BaseAdapter {
         Scanner scannerListFile = new Scanner(fileReaderListFile);
 
         File temp = new File(context.getExternalFilesDir(null), "temp.txt");
-        FileWriter fileWriter;
+        FileWriter fileWriterTemp = null;
         try {
-            fileWriter = new FileWriter(temp);
+            fileWriterTemp = new FileWriter(temp);
+
+            for (int i = 0; i < sourceSizeList; i++) {
+                if (i == position) continue;
+
+                fileWriterTemp.append(scannerListFile.nextLine());
+                if ((i + 1) != sourceSizeList) {
+                    fileWriterTemp.append("\n");
+                }
+            }
         } catch (IOException e) {
             e.printStackTrace();
-            return;
-        }
-
-        for (int i = 0; i < sourceSizeList; i++) {
-            if (i == position) continue;
-
+        } finally {
             try {
-                String x = scannerListFile.nextLine();
-                fileWriter.append(x);
-                if ((i+1) != sourceSizeList) {
-                    fileWriter.append("\n");
+                fileReaderListFile.close();
+
+                if (fileWriterTemp != null) {
+                    fileWriterTemp.close();
                 }
             } catch (IOException e) {
                 e.printStackTrace();
-                return;
             }
         }
 
-        try {
-            fileReaderListFile.close();
-            fileWriter.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
         temp.renameTo(listFile);
-
 
     }
 
