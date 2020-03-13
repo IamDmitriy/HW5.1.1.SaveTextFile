@@ -8,6 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
@@ -59,10 +60,10 @@ public class ItemsDataAdapter extends BaseAdapter {
 
         File listFile = new File(context.getExternalFilesDir(null), "listFile.txt");
         if (!listFile.exists()) {
+            Toast.makeText(context, context.getString(R.string.toast_file_not_found),
+                    Toast.LENGTH_SHORT).show();
             return;
         }
-
-        File temp = new File(context.getExternalFilesDir(null), "temp.txt");
 
         FileReader fileReaderListFile;
         try {
@@ -71,9 +72,9 @@ public class ItemsDataAdapter extends BaseAdapter {
             e.printStackTrace();
             return;
         }
-
         Scanner scannerListFile = new Scanner(fileReaderListFile);
 
+        File temp = new File(context.getExternalFilesDir(null), "temp.txt");
         FileWriter fileWriter;
         try {
             fileWriter = new FileWriter(temp);
@@ -86,7 +87,11 @@ public class ItemsDataAdapter extends BaseAdapter {
             if (i == position) continue;
 
             try {
-                fileWriter.append(scannerListFile.nextLine());
+                String x = scannerListFile.nextLine();
+                fileWriter.append(x);
+                if ((i+1) != sourceSizeList) {
+                    fileWriter.append("\n");
+                }
             } catch (IOException e) {
                 e.printStackTrace();
                 return;
